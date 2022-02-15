@@ -1,0 +1,92 @@
+<!--
+
+A simple HTML/CSS/Javascript implementation of a single handed 24 hour clock
+
+Copyright 2022 Stu Coates <stu@stucoates.com>
+
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this 
+list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, 
+this list of conditions and the following disclaimer in the documentation and/or 
+other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+POSSIBILITY OF SUCH DAMAGE.
+
+-->
+<html>
+<head><title>24 Hour Clock</title><head>
+<body>
+
+<div style="width: 100%; font-size: 42pt; margin-top: 4em; margin-left: 1em; ">
+
+  <!-- the numbers for the clock -->
+  <script>
+    for(let h=0;h<24;h++) {
+      let sp=h<10?" ":"";
+      document.write(
+        "<div id='h"
+        +h
+        +"'><pre>"
+        +sp
+        +h
+        +"               <pre></div>");
+    }
+  </script>
+
+  <!-- one hand to rule them all! -->
+  <div id="hand"><pre><strong>&#x25C0;=======&#9679;        </strong></pre></div>
+
+</div>
+
+<script>
+
+  // rotate the hand by a number of degrees
+  function doRotate(degs) {
+    document
+      .getElementById("hand")
+      .setAttribute("style","color: red; opacity: 0.9; position: fixed; z-index: 100; transform: rotate(" + degs + "deg);");
+  }
+
+  // calculate the rotation degrees based on the hour
+  function toDegs(hours) {
+    return (hours*15)+90;
+  }
+
+  // spin the hand to the required time
+  function spin() {
+    const d=new Date();
+    doRotate(
+      toDegs(
+        d.getHours()+(d.getMinutes()/60)));
+  }
+  
+  // update regularly
+  setInterval(spin,10000);
+
+  // position the hours
+  for(let h=0;h<24;h++) {
+    document
+      .getElementById("h"+h)
+      .setAttribute("style","color:grey; position: fixed; z-index: " + (h+20) + "; transform: rotate(" + toDegs(h) + "deg);")
+  }
+  
+  // do initial display
+  spin();
+
+</script>
+
+</body>
+</html>
